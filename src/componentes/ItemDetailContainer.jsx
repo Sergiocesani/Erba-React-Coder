@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProductById } from "../../data/api.js";
+import { getProductById } from "../../data/api.js"; 
+import ItemCount from "./ItemCount";
 
 const ItemDetailContainer = () => {
   const { id } = useParams();
@@ -17,25 +18,31 @@ const ItemDetailContainer = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
+  const handleAddToCart = (qty) => {
+    alert(`Agregaste ${qty} unidad(es) de "${item.title}" al carrito`);
+  };
+
   if (loading) return <p>Cargando producto...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!item) return <p>El producto no existe.</p>;
 
   return (
-    <article style={{ display: "grid", gap: 16 }}>
-      <h2>{item.title}</h2>
-      <img src={item.image} alt={item.title} style={{ maxWidth: 320, borderRadius: 8 }} />
-      <p>{item.description}</p>
-      <p><strong>Precio:</strong> ${item.price}</p>
-      <p><strong>Stock:</strong> {item.stock}</p>
+    <section className="item-detail">
+      <img src={item.image} alt={item.title} className="item-detail-img" />
 
-      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-        <button>-</button>
-        <span>1</span>
-        <button>+</button>
-        <button>Añadir al carrito</button>
-      </div>
-    </article>
+      <article style={{ display: "grid", gap: 12 }}>
+        <h2>{item.title}</h2>
+        <p>{item.description}</p>
+        <p><strong>Precio:</strong> ${item.price}</p>
+        <p><strong>Stock:</strong> {item.stock}</p>
+
+        <ItemCount
+          stock={item.stock}
+          initial={1}
+          onAdd={handleAddToCart}
+        />
+      </article>
+    </section>
   );
 };
 
