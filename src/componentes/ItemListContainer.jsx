@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getProducts } from "../../data/api";
+import { getProducts } from "../../data/api.js";
 
 const ItemCard = ({ item }) => {
   return (
-    <article style={{
-      border: "1px solid rgba(0,0,0,.2)",
-      borderRadius: 12,
-      padding: 12,
-      display: "grid",
-      gap: 8
-    }}>
-      <img src={item.image} alt={item.title} style={{ width: "100%", borderRadius: 8 }} />
-      <h4 style={{ margin: "8px 0" }}>{item.title}</h4>
-      <p style={{ margin: 0 }}><strong>${item.price}</strong></p>
-      <Link to={`/item/${item.id}`}>Ver detalle</Link>
+    <article className="item-card">
+      <img src={item.image} alt={item.title} className="item-card-img" />
+      <h4 className="item-card-title">{item.title}</h4>
+      <p className="item-card-price"><strong>${item.price}</strong></p>
+      <Link to={`/item/${item.id}`} className="item-card-link">
+        Ver detalle
+      </Link>
     </article>
   );
 };
@@ -22,11 +18,7 @@ const ItemCard = ({ item }) => {
 const ItemList = ({ items }) => {
   if (!items.length) return <p>No hay productos en esta categoría.</p>;
   return (
-    <div style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-      gap: 16
-    }}>
+    <div className="item-list">
       {items.map((prod) => (
         <ItemCard key={prod.id} item={prod} />
       ))}
@@ -37,7 +29,7 @@ const ItemList = ({ items }) => {
 const ItemListContainer = ({ mensaje }) => {
   const { categoryId } = useParams();
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
