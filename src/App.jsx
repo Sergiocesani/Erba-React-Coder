@@ -4,6 +4,7 @@ import NavBar from "./componentes/navbar";
 import ItemListContainer from "./componentes/ItemListContainer";
 import ItemDetailContainer from "./componentes/ItemDetailContainer";
 
+
 const NotFound = () => (
   <section style={{ textAlign: "center", padding: "40px 12px" }}>
     <h2>404 - Página no encontrada</h2>
