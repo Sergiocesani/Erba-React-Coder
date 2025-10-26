@@ -1,14 +1,13 @@
-const CartWidget = () => {
-  // Placeholder: más adelante conectamos con el estado real del carrito
-  const count = 0;
+import { useCart } from "../context/CartContext.jsx";
 
+const CartWidget = () => {
+  const { totalUnits } = useCart();
   return (
     <button className="cart-widget" aria-label="Carrito">
       <span role="img" aria-label="carrito">🛒</span>
-      <span>{count}</span>
+      <span>{totalUnits}</span>
     </button>
   );
 };
 
 export default CartWidget;
-

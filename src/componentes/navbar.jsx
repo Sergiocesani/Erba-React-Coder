@@ -14,6 +14,7 @@ const NavBar = ({ logo, brand }) => {
           <li><NavLink to="/category/hombre">Hombre</NavLink></li>
           <li><NavLink to="/category/mujer">Mujer</NavLink></li>
           <li><NavLink to="/category/unisex">Unisex</NavLink></li>
+          <li><NavLink to="/cart">Carrito</NavLink></li>
         </ul>
 
         <CartWidget />
