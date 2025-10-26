@@ -240,7 +240,6 @@ body {
   align-items: center;
 }
 
-/* Botones pequeños de acción: -1 y papelera */
 .icon-btn {
   min-width: 36px;
   height: 36px;
@@ -289,6 +288,88 @@ body {
   margin-left: 6px;
   color: #fff;
 }
+
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(190, 107, 140, 0.85);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+}
+
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.line {
+  width: 25px;
+  height: 3px;
+  background: #000;
+  margin: 4px;
+  transition: 0.3s;
+}
+
+.open.line1 { transform: rotate(45deg) translate(5px, 5px); }
+.open.line2 { opacity: 0; }
+.open.line3 { transform: rotate(-45deg) translate(6px, -6px); }
+
+/* Desktop */
+.navbar-links.desktop {
+  display: flex;
+  gap: 16px;
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  background-color: #f4f4f4;
+  width: 100%;
+  height: calc(100vh - 60px);
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.mobile-menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.mobile-menu ul li {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.mobile-menu ul li a {
+  font-size: 20px;
+  color: #000;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .navbar-links.desktop {
+    display: none;
+  }
+  .hamburger-btn {
+    display: block;
+  }
+}
+
 
 @media (min-width: 900px) {
   .item-detail {
