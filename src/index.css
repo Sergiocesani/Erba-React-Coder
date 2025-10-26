@@ -391,6 +391,21 @@ body {
   box-shadow: none;
 }
 
+.descripcion-detalle {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #ccc;
+  color: #444;
+  line-height: 1.6;
+}
+
+.descripcion-detalle h3 {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  color: #222;
+  font-weight: 700;
+}
+
 /* ====== DESKTOP (>= 900px) ====== */
 @media (min-width: 900px) {
   .hamburger-btn { display: none !important; }
@@ -401,4 +416,20 @@ body {
     margin: 0; padding: 0;
   }
   .mobile-menu { display: none !important; }
+}
+
+@media (min-width: 900px) {
+  .item-detail {
+    grid-template-columns: 420px 1fr;  /* imagen | contenido */
+    column-gap: 36px;
+    align-items: start;
+  }
+
+  .item-detail-img {
+    height: 520px; /* un poco más grande en desktop */
+  }
+
+  .item-detail > article {
+    max-width: 680px; /* lectura cómoda */
+  }
 }

@@ -1,3 +1,4 @@
+// src/componentes/ItemDetailContainer.jsx
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchProductById } from "../services/firebase.js";
@@ -10,15 +11,15 @@ const ItemDetailContainer = () => {
   const { addItem } = useCart();
 
   const [item, setItem] = useState(null);
-  const [sel, setSel] = useState(null);      
+  const [sel, setSel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [imgLoaded, setImgLoaded] = useState(false); 
 
   useEffect(() => {
     setLoading(true);
     setError("");
     setSel(null);
+
     fetchProductById(id)
       .then((p) => {
         setItem(p);
@@ -30,8 +31,7 @@ const ItemDetailContainer = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
-  useEffect(() => { setImgLoaded(false); }, [sel]);
-
+  // (opcional) suma de stock si el producto tiene variantes
   const totalStockFromSizes = useMemo(() => {
     if (!Array.isArray(item?.sizes)) return null;
     return item.sizes.reduce((acc, s) => acc + (Number(s.stock) || 0), 0);
@@ -46,24 +46,6 @@ const ItemDetailContainer = () => {
   const displayTitle = sel?.label ? `${item.title} (${sel.label})` : item.title;
   const displayImage = sel?.image || item.image || "/image/placeholder.png";
 
-  if (Array.isArray(item.sizes) && (totalStockFromSizes ?? 0) <= 0) {
-    return (
-      <section className="item-detail">
-        <img
-          src={displayImage}
-          alt={displayTitle}
-          className="item-detail-img"
-          onError={(e) => { e.currentTarget.src = "/image/placeholder.png"; }}
-        />
-        <article style={{ display: "grid", gap: 12 }}>
-          <h2>{displayTitle}</h2>
-          <p>{item.description}</p>
-          <p><strong>Producto sin stock</strong></p>
-        </article>
-      </section>
-    );
-  }
-
   const handleAddToCart = (qty) => {
     if (!item) return;
     addItem(
@@ -77,52 +59,76 @@ const ItemDetailContainer = () => {
       },
       qty
     );
-    alert(`Agregaste ${qty} ${sel?.label ? `(${sel.label}) ` : ""}de "${item.title}" al carrito`);
+    alert(
+      `Agregaste ${qty} ${sel?.label ? `(${sel.label}) ` : ""}de "${item.title}" al carrito`
+    );
   };
+
+  // Si el producto tiene variantes y no hay stock en ninguna, mostrar mensaje
+  if (Array.isArray(item.sizes) && (totalStockFromSizes ?? 0) <= 0) {
+    return (
+      <section className="item-detail">
+        <img
+          src={displayImage}
+          alt={displayTitle}
+          className="item-detail-img"
+          onError={(e) => {
+            e.currentTarget.src = "/image/placeholder.png";
+          }}
+        />
+        <article style={{ display: "grid", gap: 12 }}>
+          <h2>{displayTitle}</h2>
+          <p><strong>Producto sin stock</strong></p>
+          <div className="descripcion-detalle">
+            <h3>Descripción</h3>
+            <p>{item.description}</p>
+          </div>
+        </article>
+      </section>
+    );
+  }
 
   return (
     <section className="item-detail">
       <img
-        key={sel?.label || "base"}                 
         src={displayImage}
         alt={displayTitle}
         className="item-detail-img"
-        style={{ opacity: imgLoaded ? 1 : 0, transition: "opacity .2s ease" }}
-        onLoad={() => setImgLoaded(true)}
-        onError={(e) => { e.currentTarget.src = "/image/placeholder.png"; setImgLoaded(true); }}
+        onError={(e) => {
+          e.currentTarget.src = "/image/placeholder.png";
+        }}
       />
 
       <article style={{ display: "grid", gap: 12 }}>
         <h2>{displayTitle}</h2>
-        <p>{item.description}</p>
 
-        {Array.isArray(item.sizes) && item.sizes.length > 0 ? (
-          <>
-            <div className="chip-group" role="group" aria-label="Seleccionar tamaño">
-              {item.sizes.map((s) => (
-                <button
-                  key={s.label}
-                  className={`chip ${sel?.label === s.label ? "active" : ""}`}
-                  onClick={() => setSel(s)}
-                  disabled={(s.stock ?? 0) <= 0}
-                  title={(s.stock ?? 0) <= 0 ? "Sin stock" : s.label}
-                >
-                  {s.label}
-                </button>
-              ))}
-            </div>
-
-            <p><strong>Precio:</strong> {formatoPrecio(price)}</p>
-            <p><strong>Stock:</strong> {stock}</p>
-          </>
-        ) : (
-          <>
-            <p><strong>Precio:</strong> {formatoPrecio(item.price)}</p>
-            <p><strong>Stock:</strong> {item.stock}</p>
-          </>
+        {/* Selector de tamaños si existen variantes */}
+        {Array.isArray(item.sizes) && item.sizes.length > 0 && (
+          <div className="chip-group" role="group" aria-label="Seleccionar tamaño">
+            {item.sizes.map((s) => (
+              <button
+                key={s.label}
+                className={`chip ${sel?.label === s.label ? "active" : ""}`}
+                onClick={() => setSel(s)}
+                disabled={(s.stock ?? 0) <= 0}
+                title={(s.stock ?? 0) <= 0 ? "Sin stock" : s.label}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
         )}
 
+        <p><strong>Precio:</strong> {formatoPrecio(price)}</p>
+        <p><strong>Stock:</strong> {stock}</p>
+
         <ItemCount stock={stock} initial={1} onAdd={handleAddToCart} />
+
+        {/* Descripción al final */}
+        <div className="descripcion-detalle">
+          <h3>Descripción</h3>
+          <p>{item.description}</p>
+        </div>
       </article>
     </section>
   );
