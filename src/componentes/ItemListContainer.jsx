@@ -7,7 +7,6 @@ import { formatoPrecio } from "../utilidades/formatoPrecio.js";
 const ItemCard = ({ item }) => {
   const { addItem } = useCart();
   const [sel, setSel] = useState(item.sizes?.[0] ?? null); 
-
   const imgSrc = item.image || "/image/placeholder.png";
   const price = sel?.price ?? item.price;
   const stock = sel?.stock ?? item.stock;
@@ -29,14 +28,24 @@ const ItemCard = ({ item }) => {
 
   return (
     <article className="item-card">
-      <img
-        src={imgSrc}
-        alt={item.title}
-        className="item-card-img"
-        onError={(e) => { e.currentTarget.src = "/image/placeholder.png"; }}
-      />
+      <Link
+        to={`/item/${item.id}`}
+        aria-label={`Ver detalle de ${item.title}`}
+        className="item-card-image-link"
+      >
+        <img
+          src={imgSrc}
+          alt={item.title}
+          className="item-card-img"
+          onError={(e) => { e.currentTarget.src = "/image/placeholder.png"; }}
+        />
+      </Link>
 
-      <h4 className="item-card-title">{item.title}</h4>
+      <h4 className="item-card-title">
+        <Link to={`/item/${item.id}`} className="item-card-title-link">
+          {item.title}
+        </Link>
+      </h4>
 
       {Array.isArray(item.sizes) && item.sizes.length > 0 ? (
         <div className="chip-group" role="group" aria-label="Seleccionar volumen">
@@ -46,6 +55,7 @@ const ItemCard = ({ item }) => {
               className={`chip ${sel?.label === s.label ? "active" : ""}`}
               onClick={() => setSel(s)}
               disabled={(s.stock ?? 0) <= 0}
+              title={(s.stock ?? 0) <= 0 ? "Sin stock" : s.label}
             >
               {s.label}
             </button>
@@ -53,7 +63,7 @@ const ItemCard = ({ item }) => {
         </div>
       ) : null}
 
-      <p className="item-card-price"><strong>{formatoPrecio(price)}</strong></p>
+     <p className="item-card-price"><strong>{formatoPrecio(price)}</strong></p>
 
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <button className="btn-primary" onClick={handleAdd} disabled={(stock ?? 0) <= 0}>
