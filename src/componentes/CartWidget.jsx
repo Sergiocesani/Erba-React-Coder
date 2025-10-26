@@ -1,12 +1,14 @@
+import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
 
 const CartWidget = () => {
-  const { totalUnits } = useCart();
+  const { totalUnits } = useCart(); 
+
   return (
-    <button className="cart-widget" aria-label="Carrito">
+    <Link to="/cart" className="cart-widget" aria-label="Ir al carrito">
       <span role="img" aria-label="carrito">🛒</span>
-      <span>{totalUnits}</span>
-    </button>
+      <span className="cart-badge">{totalUnits || 0}</span>
+    </Link>
   );
 };
 

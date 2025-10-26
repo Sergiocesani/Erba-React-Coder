@@ -1,22 +1,48 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
 
-const CartItem = ({ item, onRemove }) => (
-  <div className="item-card" style={{ maxWidth: 600 }}>
-    <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-      <img src={item.image} alt={item.title} className="item-card-img" style={{ width: 120, height: 120 }} />
-      <div style={{ flex: 1 }}>
+const CartItem = ({ item, onRemove, onDecrement }) => (
+  <div className="item-card cart-item-card" style={{ maxWidth: 760 }}>
+    <div className="cart-item-body">
+      <img
+        src={item.image || "/image/placeholder.png"}
+        alt={item.title}
+        className="item-card-img"
+        style={{ width: 120, height: 120 }}
+        onError={(e) => { e.currentTarget.src = "/image/placeholder.png"; }}
+      />
+
+      <div className="cart-item-info">
         <h4 className="item-card-title">{item.title}</h4>
         <p className="item-card-price"><strong>${item.price}</strong></p>
-        <p>Cantidad: {item.quantity} — Subtotal: ${item.price * item.quantity}</p>
+        <p><strong>Cantidad:</strong> {item.quantity} — <strong>Subtotal:</strong> ${item.price * item.quantity}</p>
       </div>
-      <button className="qty-btn" onClick={() => onRemove(item.id)}>Eliminar</button>
+
+      <div className="cart-item-actions">
+        <button
+          className="icon-btn"
+          onClick={() => onDecrement(item.id)}
+          aria-label="Quitar una unidad"
+          title="Quitar una unidad"
+        >
+          −1
+        </button>
+
+        <button
+          className="icon-btn danger"
+          onClick={() => onRemove(item.id)}
+          aria-label="Eliminar producto del carrito"
+          title="Eliminar producto"
+        >
+          🗑️
+        </button>
+      </div>
     </div>
   </div>
 );
 
 const Cart = () => {
-  const { items, removeItem, clearCart, totalUnits, totalPrice } = useCart();
+  const { items, decrementItem, removeItem, clearCart, totalUnits, totalPrice } = useCart();
 
   if (!items.length) {
     return (
@@ -30,14 +56,25 @@ const Cart = () => {
   return (
     <section className="item-list-container">
       <h2>Tu carrito</h2>
+
       <div className="item-list" style={{ gridTemplateColumns: "1fr" }}>
-        {items.map(i => <CartItem key={i.id} item={i} onRemove={removeItem} />)}
+        {items.map(i => (
+          <CartItem
+            key={i.id}
+            item={i}
+            onDecrement={decrementItem}
+            onRemove={removeItem}
+          />
+        ))}
       </div>
+
       <hr />
+
       <p><strong>Unidades:</strong> {totalUnits}</p>
       <p><strong>Total:</strong> ${totalPrice}</p>
+
       <div style={{ display: "flex", gap: 12, marginTop: 12 }}>
-        <button className="btn-primary" onClick={clearCart}>Vaciar</button>
+        <button className="btn-primary" onClick={clearCart}>Vaciar carrito</button>
         <Link className="item-card-link" to="/checkout">Ir al checkout</Link>
       </div>
     </section>

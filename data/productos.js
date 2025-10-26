@@ -40,17 +40,8 @@ export const PRODUCTOS = [
     title: "Le Male Elixir Jean Paul Galtier 75ml",
     price: 168000,
     category: "hombre",
-    image: "/image/le-male-elixir-jpg-75-ml-webp",
+    image: "/image/le-male-elixir-jpg-75-ml.webp",
     description: "¡Qué calor abrasador con la llegada a bordo del nuevo marinero LeMaleElixir! Sobre la cubierta, su perfume Gaultier es tan intensoqueelorose funde en estrías color fuego sobre su torso tórrido y su cajademetal. Un sex-appeal a la máxima potencia que dora su piel conunaadicción ambarina aromática amaderada y zozobrante. El horizontetambalea. Los sentidos se agitan. Encendidos de deseo por esteelixirsensual que emana bajo su camiseta marinera marrón translúcida. El ambarino aromático de un perfume intenso. En un rocíotórrido,esteelixir ambarino aromático amaderado abraza los sentidos hasta laadicción. Ardiente de sensualidad. Intenso sobre la piel. Entornoasulavanda legendaria, gravitan el sol de un haba tonka tropical,elcaloranimal de un benjuí cautivador, una frescura de menta y debergamota.¡Ylisto! Te derretirás de deseo. Familia Olfativa: Ámbar aromático.Nota de salida: Lavanda.Nota de Corazón: Haba Tonka.Nota de Fondo: Benjuí.",
     stock: 8,
-  },
-  {
-    id: "6",
-    title: "GIVENCHY Gentleman Reserve Privea© EDP 60 ml",
-    price: 197600,
-    category: "hombre",
-    image: "/image/gentleman-givenchy-60ml.wepb",
-    description: "La sensualidad de la madera ambarina se combina con el luminosolirioetéreo para formar un dúo totalmente adictivo y embriagador. Estafragancia, infusionada con suave absoluto de whisky natural, ha sidoelaborada en Grasse con cebada aromática procedente de una refinadadestilería escocesa. El perfume de tonalidades ambarinas, que evocalasnotas intensas del propio whisky, se presenta en un frasco de formasdepuradas y pulidas que recuerda a una elegante petaca. GentlemanEaude Parfum Réserve Privée de Givenchy encarna lo máximo en eleganciayrefinamiento atemporal. Una embriagadora fragancia inspirada en elwhisky, en la que las elegantes notas florales contrastan con lasprofundidades amaderadas. Este singular eau de parfum combina losuniversos olfativos y el saber hacer único de un maestro destiladordewhisky y dos maestros perfumistas. Ambarina Floral Amaderada -Notasde salida: Esencia de Bergamota de Italia, Absoluto de Whisky deEscocia- Notas de corazón: Castaña, Concreto de Lirio de Italia y China,Resinoide Benjuí Siam de Laos - Notas de fondo: Esencia de MaderadeCedro de Virginia, Esencia de Vetiver de Haití, Esencia de PachulídeIndonesia",
-    stock: 6,
   }
 ];
