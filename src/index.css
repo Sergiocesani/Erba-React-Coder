@@ -188,7 +188,14 @@ body {
   font-weight: 600;
 }
 .item-card-link:hover { color: #111; }
+.item-card-title-link {
+  color: #000 !important; 
+  text-decoration: none;   
+}
 
+.item-card-title-link:hover {
+  color: #222; 
+}
 
 .cart-item {
   position: relative;       
