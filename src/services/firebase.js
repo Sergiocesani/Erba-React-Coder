@@ -40,6 +40,7 @@ function mapDoc(d) {
         label: String(s?.label ?? s?.tamano ?? s?.size ?? "").trim(),
         price: Number(s?.price ?? s?.precio ?? 0),
         stock: Number(s?.stock ?? 0),
+        image: normalizeImage(s?.image ?? s?.imagen ?? ""),
       }))
     : null;
 

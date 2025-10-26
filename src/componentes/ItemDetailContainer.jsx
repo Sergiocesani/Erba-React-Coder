@@ -10,9 +10,10 @@ const ItemDetailContainer = () => {
   const { addItem } = useCart();
 
   const [item, setItem] = useState(null);
-  const [sel, setSel] = useState(null); 
+  const [sel, setSel] = useState(null);      
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [imgLoaded, setImgLoaded] = useState(false); 
 
   useEffect(() => {
     setLoading(true);
@@ -29,6 +30,8 @@ const ItemDetailContainer = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
+  useEffect(() => { setImgLoaded(false); }, [sel]);
+
   const totalStockFromSizes = useMemo(() => {
     if (!Array.isArray(item?.sizes)) return null;
     return item.sizes.reduce((acc, s) => acc + (Number(s.stock) || 0), 0);
@@ -38,17 +41,22 @@ const ItemDetailContainer = () => {
   if (error) return <p>Error: {error}</p>;
   if (!item) return <p>El producto no existe.</p>;
 
+  const price = sel?.price ?? item.price;
+  const stock = sel?.stock ?? item.stock;
+  const displayTitle = sel?.label ? `${item.title} (${sel.label})` : item.title;
+  const displayImage = sel?.image || item.image || "/image/placeholder.png";
+
   if (Array.isArray(item.sizes) && (totalStockFromSizes ?? 0) <= 0) {
     return (
       <section className="item-detail">
         <img
-          src={item.image || "/image/placeholder.png"}
-          alt={item.title}
+          src={displayImage}
+          alt={displayTitle}
           className="item-detail-img"
           onError={(e) => { e.currentTarget.src = "/image/placeholder.png"; }}
         />
         <article style={{ display: "grid", gap: 12 }}>
-          <h2>{item.title}</h2>
+          <h2>{displayTitle}</h2>
           <p>{item.description}</p>
           <p><strong>Producto sin stock</strong></p>
         </article>
@@ -56,17 +64,13 @@ const ItemDetailContainer = () => {
     );
   }
 
-  const price = sel?.price ?? item.price;
-  const stock = sel?.stock ?? item.stock;
-  const imgSrc = item.image || "/image/placeholder.png";
-
   const handleAddToCart = (qty) => {
     if (!item) return;
     addItem(
       {
         id: item.id,
         title: item.title,
-        image: item.image,
+        image: displayImage,
         price,
         stock,
         size: sel?.label ?? undefined,
@@ -79,14 +83,17 @@ const ItemDetailContainer = () => {
   return (
     <section className="item-detail">
       <img
-        src={imgSrc}
-        alt={item.title}
+        key={sel?.label || "base"}                 
+        src={displayImage}
+        alt={displayTitle}
         className="item-detail-img"
-        onError={(e) => { e.currentTarget.src = "/image/placeholder.png"; }}
+        style={{ opacity: imgLoaded ? 1 : 0, transition: "opacity .2s ease" }}
+        onLoad={() => setImgLoaded(true)}
+        onError={(e) => { e.currentTarget.src = "/image/placeholder.png"; setImgLoaded(true); }}
       />
 
       <article style={{ display: "grid", gap: 12 }}>
-        <h2>{item.title}</h2>
+        <h2>{displayTitle}</h2>
         <p>{item.description}</p>
 
         {Array.isArray(item.sizes) && item.sizes.length > 0 ? (
@@ -98,6 +105,7 @@ const ItemDetailContainer = () => {
                   className={`chip ${sel?.label === s.label ? "active" : ""}`}
                   onClick={() => setSel(s)}
                   disabled={(s.stock ?? 0) <= 0}
+                  title={(s.stock ?? 0) <= 0 ? "Sin stock" : s.label}
                 >
                   {s.label}
                 </button>
