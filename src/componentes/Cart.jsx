@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
+import { formatoPrecio } from "../utilidades/formatoPrecio.js";
 
 const CartItem = ({ item, onRemove, onDecrement }) => (
   <div className="item-card cart-item-card" style={{ maxWidth: 760 }}>
@@ -13,15 +14,23 @@ const CartItem = ({ item, onRemove, onDecrement }) => (
       />
 
       <div className="cart-item-info">
-        <h4 className="item-card-title">{item.title}</h4>
-        <p className="item-card-price"><strong>${item.price}</strong></p>
-        <p><strong>Cantidad:</strong> {item.quantity} — <strong>Subtotal:</strong> ${item.price * item.quantity}</p>
+        <h4 className="item-card-title">
+          {item.title}{" "}
+          {item.size ? <small>({item.size})</small> : null}
+        </h4>
+        <p className="item-card-price">
+          <strong>{formatoPrecio(item.price)}</strong>
+        </p>
+        <p>
+          <strong>Cantidad:</strong> {item.quantity} —{" "}
+          <strong>Subtotal:</strong> {formatoPrecio(item.price * item.quantity)}
+        </p>
       </div>
 
       <div className="cart-item-actions">
         <button
           className="icon-btn"
-          onClick={() => onDecrement(item.id)}
+          onClick={() => onDecrement(item.id, item.size)}
           aria-label="Quitar una unidad"
           title="Quitar una unidad"
         >
@@ -30,7 +39,7 @@ const CartItem = ({ item, onRemove, onDecrement }) => (
 
         <button
           className="icon-btn danger"
-          onClick={() => onRemove(item.id)}
+          onClick={() => onRemove(item.id, item.size)}
           aria-label="Eliminar producto del carrito"
           title="Eliminar producto"
         >
@@ -58,9 +67,9 @@ const Cart = () => {
       <h2>Tu carrito</h2>
 
       <div className="item-list" style={{ gridTemplateColumns: "1fr" }}>
-        {items.map(i => (
+        {items.map((i) => (
           <CartItem
-            key={i.id}
+            key={`${i.id}${i.size ? `|${i.size}` : ""}`} 
             item={i}
             onDecrement={decrementItem}
             onRemove={removeItem}
@@ -71,7 +80,7 @@ const Cart = () => {
       <hr />
 
       <p><strong>Unidades:</strong> {totalUnits}</p>
-      <p><strong>Total:</strong> ${totalPrice}</p>
+      <p><strong>Total:</strong> {formatoPrecio(totalPrice)}</p>
 
       <div style={{ display: "flex", gap: 12, marginTop: 12 }}>
         <button className="btn-primary" onClick={clearCart}>Vaciar carrito</button>

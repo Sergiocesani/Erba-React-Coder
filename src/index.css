@@ -251,6 +251,38 @@ body {
 .icon-btn.danger { border-color: rgba(220, 53, 69, .35); }
 .icon-btn.danger:hover { background: #ffe9ec; }
 
+.chip-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 6px 0 4px;
+}
+
+.chip {
+  border: 1px solid rgba(0,0,0,.2);
+  background: #fff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.chip:hover { background: #f7f7f7; }
+.chip.active {
+  border-color: #6f42c1;
+  box-shadow: 0 0 0 2px rgba(111,66,193,.15) inset;
+}
+.chip:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.cart-total {
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 6px;
+  color: #fff;
+}
+
 @media (min-width: 900px) {
   .item-detail {
     grid-template-columns: 420px 1fr;
